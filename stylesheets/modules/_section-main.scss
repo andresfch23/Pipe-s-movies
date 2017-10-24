@@ -1,0 +1,155 @@
+.main {
+    background-image: url('../images/it.jpg');
+    background-repeat: no-repeat;
+    height: calc(100vh - 69px);
+    width: 100%;
+    display: flex;
+    &__left {
+        &-menu {
+            order: 1;
+            background-color: $background-gray;
+            width: 20%;
+            height: calc(100vh - 69px);
+            overflow: scroll;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            text-align: center;
+            @media screen and (max-width:900px){
+                position: fixed;
+                top: 69px;
+                left: 0;
+                width: 146px;
+            }
+            &-image {
+                width: 50%;
+                height: auto;
+            }
+            &-movie {
+                margin: 20px 0;
+                width: 100%;
+                font-size: 18px;
+            }
+            &-title {
+                margin: 0;
+                margin-top: 10px;
+                font-size: 18px;
+                color: $white;
+            }
+            &-text {
+                font-size: 15px,
+            }
+        }
+        &-select {
+            background-color: $black;
+            color: $white;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+    }
+    &__info {
+        width: 100%;
+        overflow: scroll;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        order: 2;
+        margin: 0;
+    }
+    &__video {
+        display: block;
+        margin: 40px auto;
+        width: 55%;
+        @media screen and (max-width:700px){
+            width: 359px;
+        }
+    }
+    &__description {
+        background-color: $background-gray;
+        margin: 0 50px;
+        border-radius: 20px;
+        @media screen and (max-width:700px){
+            margin: 0 20px;
+        }
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+        }
+        &-button {
+            background-color: $blue;
+            align-self: center;
+            margin-right: 22px;
+            color: $white;
+            font-size: 15px;
+            border: none;
+            padding: 6px 45px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        &-title {
+            font-size: 25px;
+            color: $blue;
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 22px;
+        }
+        &-text {
+            padding-left: 22px;
+            padding-right: 22px;
+            padding-top: 20px;
+            color: $gray-dark;
+        }
+        &-similar {
+            padding-left: 22px;
+            color: $blue;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }    
+    &__gallery {
+        font-size: 0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        &-text {
+            font-size: 14px;
+        }
+        &-title {
+            margin-bottom: -5px;
+            color: $white;
+            font-size: 18px;
+        }
+        &-image {
+            width: 30%;
+            height: auto;
+            @media screen and (min-width:580px) and (max-width:1000px){
+                width: 35%;
+            }
+        }
+        &-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+            @media screen and (min-width:580px) and (max-width:1000px){
+                margin-bottom: 0;
+            }
+        }
+        &-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @media screen and (min-width:580px) and (max-width:1000px){
+                width: 50%;
+                margin-bottom: 20px;
+            }
+            @media screen and (max-width:580px){
+                width: 100%;
+                margin-bottom: 40px;
+            }
+        }
+        &-info {
+            padding-left: 20px;
+        }
+    }          
+}
