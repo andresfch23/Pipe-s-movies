@@ -956,9 +956,6 @@ body {
         .navbar__icon-container {
           right: 0;
           transform: translate(20%, -30%);
-          margin-right: 3em; } }
-      @media screen and (max-width: 768px) {
-        .navbar__icon-container {
           margin-right: 1.5em; } }
     .navbar__icon--ticket {
       background-position-x: 0;
