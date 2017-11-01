@@ -1,5 +1,4 @@
 .main {
-    background-image: url('../images/it.jpg');
     background-repeat: no-repeat;
     height: calc(100vh - 69px);
     width: 100%;
@@ -23,6 +22,11 @@
             &-image {
                 width: 50%;
                 height: auto;
+                cursor: pointer;
+                border: 2px solid transparent;
+                &:hover {
+                    border: 2px solid $blue;
+                } 
             }
             &-movie {
                 margin: 20px 0;
@@ -109,13 +113,18 @@
         font-size: 0;
         padding-bottom: 15px;
         margin-bottom: 30px;
+        padding-left: 30px;
         &-text {
             font-size: 14px;
         }
         &-title {
             margin-bottom: -5px;
             color: $white;
-            font-size: 18px;
+            font-size: 15px;
+            @media screen and (max-width:580px){
+                margin-bottom: 10px;
+                font-size: 18px;
+            }
         }
         &-image {
             width: 30%;
@@ -126,8 +135,6 @@
         }
         &-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
             width: 100%;
@@ -138,7 +145,7 @@
         &-item {
             display: flex;
             align-items: center;
-            justify-content: center;
+            margin-bottom: 17px;
             @media screen and (min-width:580px) and (max-width:1000px){
                 width: 50%;
                 margin-bottom: 20px;
@@ -150,6 +157,9 @@
         }
         &-info {
             padding-left: 20px;
+            @media screen and (max-width:580px){
+                padding-left: 70px;
+            }
         }
     }          
 }
