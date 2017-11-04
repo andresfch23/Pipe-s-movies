@@ -1069,6 +1069,8 @@ body {
       padding: 6px 45px;
       border-radius: 6px;
       cursor: pointer; }
+      .main__description-button--add {
+        background-color: #fb2e01; }
     .main__description-title {
       font-size: 25px;
       color: #58A5FF;
