@@ -1,5 +1,4 @@
-$(document).ready(function(){
-    
+$(document).ready(function(){   
     var key = 'c0b2e256491361d28c75bbe8f9e59a85';
     var baseUrl = 'https://api.themoviedb.org/3/';
     var imageUrl = 'http://image.tmdb.org/t/p/w500';
@@ -12,8 +11,8 @@ $(document).ready(function(){
     var $descriptionVideo = $('.main__description-video');
     var $descriptionTitle = $('.main__description-title');
     var $descriptionText = $('.main__description-text');
-    var $grid = $('.grid',);
-    var $descriptionContainer = $('.main__description-container',);
+    var $grid = $('.grid');
+    var $descriptionContainer = $('.main__description-container');
     
     // Function to toggle the left menu
     var onToggleMenu = () => $leftMenu.toggle();
@@ -36,7 +35,6 @@ $(document).ready(function(){
     function OnRenderMoviesFirstGenre(movies) {
         movies.results.forEach(appendMoviesLeft);
         // Function to render the movies with the click event
-        $('.js-left-menu-image').click(onRenderMoviesClick);
 
         // Function to get the information of the first movie in the list on the left menu
         var idMovie = movies.results[0].id
@@ -63,6 +61,12 @@ $(document).ready(function(){
         $('.js-main').css('background-image', 'url('+imageUrlBackDrop+infoMovie.backdrop_path+')');
         $('.main__description-button').remove();
         $descriptionContainer.append(`<button type=button class='main__description-button js-button' data-id=${idMovie}>ADD TO FAVORITES</button>`);
+        var text = $("button[data-id='" + idMovie +"']").text();
+        if($.inArray(idMovie, $favoriteMovies) !== -1) {
+            $('.js-button').addClass('main__description-button--add');
+            text = text.replace('ADD TO FAVORITES', 'REMOVE FROM FAVORITES');
+            $('.js-button').text(text);
+        }
         $("button[data-id='" + idMovie +"']").click(favoriteMovies);   
     }
 
@@ -70,11 +74,12 @@ $(document).ready(function(){
         var idMovie = $(this).data('id');
         var classBtn = $(this).attr('class');
         var text = $(this).text();
+
         if (classBtn === 'main__description-button js-button'){
             $('.js-button').addClass('main__description-button--add');
             text = text.replace('ADD TO FAVORITES', 'REMOVE FROM FAVORITES');
             $('.js-button').text(text);
-            $favoriteMovies.push(idMovie);
+            $favoriteMovies.unshift(idMovie);
             var favoriteArray = $favoriteMovies.length;
             if (favoriteArray > 0){
                 $('.js-left-select option[value="favorites"]').show();
@@ -86,7 +91,6 @@ $(document).ready(function(){
             $('.js-button').text(text);
             $favoriteMovies = $.grep($favoriteMovies, function(value){
                 return value != removeItem;
-                console.log($favoriteMovies);
             });
             var favoriteArray = $favoriteMovies.length;
             if (favoriteArray  < 1){
@@ -110,6 +114,7 @@ $(document).ready(function(){
     function appendMoviesLeft(movie) {
         var year = movie.release_date.substring(0,4);
         $leftMenuContainer.append(`<div class=main__left-menu-movie><img src=${imageUrl+movie.poster_path} data-id=${movie.id} class="main__left-menu-image js-left-menu-image"><h4 class=main__left-menu-title>${movie.title}</h4><span class=main__left-menu-text>${year}</span></div>`);
+        $(`[data-id=${movie.id}]`).click(onRenderMoviesClick);
     }
     
     function onRenderSelectOptions(result) {
@@ -120,9 +125,9 @@ $(document).ready(function(){
     
     // Function to render the select options
     $leftSelect.change(function(){
-        var text = '';
+        var id = '';
         $('.js-left-select option:selected').each(function(){
-            text = $(this).val();
+            id = $(this).val();
         });
         
         $leftMenuContainer.empty();
@@ -130,7 +135,35 @@ $(document).ready(function(){
         $descriptionTitle.empty();
         $descriptionText.empty();
         $grid.empty();
-        
-        $.get(`${baseUrl}genre/${text}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`, OnRenderMoviesFirstGenre);
+
+        if (id !== "favorites" ) {
+            $.get(`${baseUrl}genre/${id}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`, OnRenderMoviesFirstGenre);
+        } else {
+
+            OnRenderMoviesFirstGenreFavorite();
+            
+            var idMovie = $favoriteMovies[0];
+            var urlInfoMovie = `${baseUrl}movie/${idMovie}?api_key=${key}&append_to_response=videos`;
+            $.get(urlInfoMovie, getInfoMovie);
+    
+            // Function to get the similar movies of the first movie in the list on the left menu
+            var urlSimilarMovies = `${baseUrl}movie/${idMovie}/similar?api_key=${key}&language=en-US&page=1`;
+            $.get(urlSimilarMovies, getSimilarMovies);
+        }
     });
+
+    function OnRenderMoviesFirstGenreFavorite() {
+        $favoriteMovies.forEach(getIdFavoritesMovies);
+        $leftMenuContainer.on('click', '.js-left-menu-image', onRenderMoviesClick);
+    }    
+
+    function getIdFavoritesMovies(idMovie) {
+        urlInfoMovie = `${baseUrl}movie/${idMovie}?api_key=${key}&append_to_response=videos`;
+        $.get(urlInfoMovie, appendMoviesLeftFavorite);
+    }
+
+    function appendMoviesLeftFavorite(movie){
+        var year = movie.release_date.substring(0,4);
+        $leftMenuContainer.append(`<div class=main__left-menu-movie><img src=${imageUrl+movie.poster_path} data-id=${movie.id} class="main__left-menu-image js-left-menu-image"><h4 class=main__left-menu-title>${movie.title}</h4><span class=main__left-menu-text>${year}</span></div>`);
+    }
 }); 
