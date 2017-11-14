@@ -28,11 +28,11 @@ $(document).ready(function(){
         $('.js-left-select option[value="favorites"]').hide();
         // Function to render the movies on the left menu
         var firstGenreId = result.genres[0].id;
-        var getMoviesGenre = `${baseUrl}genre/${firstGenreId}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`;
-        $.get(getMoviesGenre, OnRenderMoviesFirstGenre);
+        var getMoviesGenreUrl = `${baseUrl}genre/${firstGenreId}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`;
+        $.get(getMoviesGenreUrl, OnRenderMoviesGenre);
     }
     
-    function OnRenderMoviesFirstGenre(movies) {
+    function OnRenderMoviesGenre(movies) {
         movies.results.forEach(appendMoviesLeft);
         // Function to render the movies with the click event
 
@@ -99,7 +99,7 @@ $(document).ready(function(){
         }
     }
 
-    function onRenderMoviesClick() {
+    function onRenderMovieInfo() {
         var idMovie = $(this).data('id');
         $descriptionVideo.empty();
         $descriptionTitle.empty();
@@ -114,7 +114,7 @@ $(document).ready(function(){
     function appendMoviesLeft(movie) {
         var year = movie.release_date.substring(0,4);
         $leftMenuContainer.append(`<div class=main__left-menu-movie><img src=${imageUrl+movie.poster_path} data-id=${movie.id} class="main__left-menu-image js-left-menu-image"><h4 class=main__left-menu-title>${movie.title}</h4><span class=main__left-menu-text>${year}</span></div>`);
-        $(`[data-id=${movie.id}]`).click(onRenderMoviesClick);
+        $(`[data-id=${movie.id}]`).click(onRenderMovieInfo);
     }
     
     function onRenderSelectOptions(result) {
@@ -137,7 +137,7 @@ $(document).ready(function(){
         $grid.empty();
 
         if (id !== "favorites" ) {
-            $.get(`${baseUrl}genre/${id}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`, OnRenderMoviesFirstGenre);
+            $.get(`${baseUrl}genre/${id}/movies?api_key=${key}&language=en-US&include_adult=false&sort_by=created_at.asc`, OnRenderMoviesGenre);
         } else {
 
             OnRenderMoviesFirstGenreFavorite();
@@ -154,7 +154,7 @@ $(document).ready(function(){
 
     function OnRenderMoviesFirstGenreFavorite() {
         $favoriteMovies.forEach(getIdFavoritesMovies);
-        $leftMenuContainer.on('click', '.js-left-menu-image', onRenderMoviesClick);
+        $leftMenuContainer.on('click', '.js-left-menu-image', onRenderMovieInfo);
     }    
 
     function getIdFavoritesMovies(idMovie) {
